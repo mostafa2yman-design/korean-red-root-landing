@@ -26,6 +26,10 @@ function trackPixelCustomEvent(eventName, parameters) {
   if (typeof window.fbq === "function") window.fbq("trackCustom", eventName, parameters);
 }
 
+function trackOpenAIPixelEvent(eventName, eventData) {
+  if (typeof window.oaiq === "function") window.oaiq("measure", eventName, eventData);
+}
+
 // Track a product view once when the product section becomes visible.
 const productSection = document.getElementById("product");
 if (productSection && "IntersectionObserver" in window) {
@@ -34,6 +38,10 @@ if (productSection && "IntersectionObserver" in window) {
       trackPixelEvent("ViewContent", {
         content_name: "Korean Red Root Kwangdong 6 Years",
         content_category: "Korean Red Ginseng"
+      });
+      trackOpenAIPixelEvent("contents_viewed", {
+        type: "contents",
+        contents: [{ id: "korean-red-root-6-years", name: "Korean Red Root Kwangdong 6 Years", content_type: "product" }]
       });
       observer.disconnect();
     }
@@ -93,6 +101,7 @@ form.addEventListener("submit", (event) => {
     content_name: "Korean Red Root Kwangdong 6 Years",
     payment_method: payment
   });
+  trackOpenAIPixelEvent("lead_created", { type: "customer_action" });
 
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank", "noopener,noreferrer");
