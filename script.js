@@ -89,7 +89,7 @@ form.addEventListener("submit", (event) => {
     "الشحن: مجانًا"
   ].join("\n");
 
-  trackPixelEvent("Contact", {
+  trackPixelEvent("Lead", {
     content_name: "Korean Red Root Kwangdong 6 Years",
     payment_method: payment
   });
