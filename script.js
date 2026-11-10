@@ -56,6 +56,8 @@ form.addEventListener("submit", (event) => {
     "الشحن: مجانًا"
   ].join("\n");
 
+  if (typeof window.fbq === "function") window.fbq('track', 'Contact');
+
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 });
