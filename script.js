@@ -18,6 +18,29 @@ function selectedPaymentPrice(payment) {
     : SITE_CONFIG.salePrice;
 }
 
+function trackPixelEvent(eventName, parameters) {
+  if (typeof window.fbq === "function") window.fbq("track", eventName, parameters);
+}
+
+function trackPixelCustomEvent(eventName, parameters) {
+  if (typeof window.fbq === "function") window.fbq("trackCustom", eventName, parameters);
+}
+
+// Track a product view once when the product section becomes visible.
+const productSection = document.getElementById("product");
+if (productSection && "IntersectionObserver" in window) {
+  const productObserver = new IntersectionObserver((entries, observer) => {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      trackPixelEvent("ViewContent", {
+        content_name: "Korean Red Root Kwangdong 6 Years",
+        content_category: "Korean Red Ginseng"
+      });
+      observer.disconnect();
+    }
+  }, { threshold: 0.35 });
+  productObserver.observe(productSection);
+}
+
 document.getElementById("oldPriceHero").textContent = formatPrice(SITE_CONFIG.originalPrice);
 document.getElementById("salePriceHero").textContent = formatPrice(SITE_CONFIG.salePrice);
 document.getElementById("year").textContent = new Date().getFullYear();
@@ -25,7 +48,17 @@ document.getElementById("year").textContent = new Date().getFullYear();
 document.querySelectorAll('input[name="payment"]').forEach((input) => {
   input.addEventListener("change", () => {
     total.innerHTML = `السعر المستحق: <b>${formatPrice(selectedPaymentPrice(input.value))}</b>`;
+    trackPixelCustomEvent("PaymentMethodSelected", {
+      payment_method: input.value
+    });
   });
+});
+
+let orderFormStarted = false;
+form.addEventListener("focusin", () => {
+  if (orderFormStarted) return;
+  orderFormStarted = true;
+  trackPixelCustomEvent("OrderFormStart", { form_name: "WhatsApp order" });
 });
 
 form.addEventListener("submit", (event) => {
@@ -56,7 +89,10 @@ form.addEventListener("submit", (event) => {
     "الشحن: مجانًا"
   ].join("\n");
 
-  if (typeof window.fbq === "function") window.fbq('track', 'Contact');
+  trackPixelEvent("Contact", {
+    content_name: "Korean Red Root Kwangdong 6 Years",
+    payment_method: payment
+  });
 
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank", "noopener,noreferrer");
@@ -72,6 +108,9 @@ function closeLightbox() {
 }
 document.querySelectorAll(".gallery-item").forEach((item) => {
   item.addEventListener("click", () => {
+    trackPixelCustomEvent("ProductImageView", {
+      image_name: item.querySelector("span")?.textContent.trim() || "Product image"
+    });
     lightboxImage.src = item.dataset.full;
     lightbox.classList.add("open");
     lightbox.setAttribute("aria-hidden", "false");
