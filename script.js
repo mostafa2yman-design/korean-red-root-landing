@@ -7,7 +7,7 @@ const SITE_CONFIG = {
   currency: "جنيه"
 };
 
-const formatPrice = (amount) => `${new Intl.NumberFormat("ar-EG").format(amount)} ${SITE_CONFIG.currency}`;
+const formatPrice = (amount) => `${new Intl.NumberFormat("en-EG").format(amount)} ${SITE_CONFIG.currency}`;
 const form = document.getElementById("orderForm");
 const total = document.getElementById("selectedTotal");
 const error = document.getElementById("formError");
