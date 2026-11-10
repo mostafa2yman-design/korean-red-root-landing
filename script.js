@@ -1,0 +1,84 @@
+/* إعدادات قابلة للتعديل — عدّل رقم واتساب والأسعار من هنا. */
+const SITE_CONFIG = {
+  whatsappNumber: "201064312414", // رقم واتساب بصيغة دولية بدون + أو مسافات
+  originalPrice: 8190,
+  salePrice: 7290,
+  digitalPaymentPrice: 6561,
+  currency: "جنيه"
+};
+
+const formatPrice = (amount) => `${new Intl.NumberFormat("ar-EG").format(amount)} ${SITE_CONFIG.currency}`;
+const form = document.getElementById("orderForm");
+const total = document.getElementById("selectedTotal");
+const error = document.getElementById("formError");
+
+function selectedPaymentPrice(payment) {
+  return payment === "إنستا باي" || payment === "محفظة إلكترونية"
+    ? SITE_CONFIG.digitalPaymentPrice
+    : SITE_CONFIG.salePrice;
+}
+
+document.getElementById("oldPriceHero").textContent = formatPrice(SITE_CONFIG.originalPrice);
+document.getElementById("salePriceHero").textContent = formatPrice(SITE_CONFIG.salePrice);
+document.getElementById("year").textContent = new Date().getFullYear();
+
+document.querySelectorAll('input[name="payment"]').forEach((input) => {
+  input.addEventListener("change", () => {
+    total.innerHTML = `السعر المستحق: <b>${formatPrice(selectedPaymentPrice(input.value))}</b>`;
+  });
+});
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  error.hidden = true;
+
+  if (!form.reportValidity()) return;
+  if (!/^\d{10,15}$/.test(SITE_CONFIG.whatsappNumber)) {
+    error.textContent = "رقم واتساب في إعدادات الموقع غير صحيح. عدّل whatsappNumber داخل script.js.";
+    error.hidden = false;
+    return;
+  }
+
+  const data = new FormData(form);
+  const payment = data.get("payment");
+  const finalPrice = selectedPaymentPrice(payment);
+  const message = [
+    "طلب جديد — Korean Red Root",
+    "",
+    `الاسم: ${data.get("name")}`,
+    `رقم التليفون: ${data.get("phone")}`,
+    `المحافظة: ${data.get("governorate")}`,
+    `العنوان: ${data.get("address")}`,
+    `طريقة الدفع: ${payment}`,
+    `السعر قبل الخصم: ${formatPrice(SITE_CONFIG.originalPrice)}`,
+    `السعر الأساسي بعد الخصم: ${formatPrice(SITE_CONFIG.salePrice)}`,
+    `الإجمالي المستحق: ${formatPrice(finalPrice)}`,
+    "الشحن: مجانًا"
+  ].join("\n");
+
+  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+});
+
+// تكبير صور المعرض
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = lightbox.querySelector("img");
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  lightboxImage.src = "";
+}
+document.querySelectorAll(".gallery-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    lightboxImage.src = item.dataset.full;
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+  });
+});
+lightbox.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (event) => {
+  if (event.target === lightbox) closeLightbox();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeLightbox();
+});
