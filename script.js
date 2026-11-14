@@ -81,6 +81,17 @@ form.addEventListener("submit", (event) => {
   }
 
   const data = new FormData(form);
+  const normalizedPhone = String(data.get("phone") || "").replace(/[٠-٩۰-۹]/g, (digit) => {
+    const code = digit.charCodeAt(0);
+    return String(code - (code >= 0x06f0 ? 0x06f0 : 0x0660));
+  });
+  const phoneDigits = normalizedPhone.replace(/\D/g, "");
+  if (!/^[+\d\s().-]+$/.test(normalizedPhone) || phoneDigits.length < 10 || phoneDigits.length > 15) {
+    error.textContent = "رقم التليفون يجب أن يحتوي على 10 إلى 15 رقمًا.";
+    error.hidden = false;
+    return;
+  }
+
   const payment = data.get("payment");
   const finalPrice = selectedPaymentPrice(payment);
   const message = [

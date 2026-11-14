@@ -12,8 +12,11 @@ korean-red-root-landing/
 ├── assets/
 │   ├── gift-set.png
 │   ├── product-details.png
-│   └── product-hero.png
-├── .gitignore
+│   ├── product-hero.png
+│   └── optimized/
+│       ├── gift-set.jpg
+│       ├── product-details.jpg
+│       └── product-hero.jpg
 └── README.md
 ```
 
@@ -65,6 +68,7 @@ korean-red-root-landing/
 - الصفحة ثابتة ولا تحتاج إلى قاعدة بيانات أو خادم خلفي.
 - نموذج الطلب يجهز رسالة ويرسلها إلى واتساب بعد فتح التطبيق/الموقع؛ لا يحفظ الطلبات في قاعدة بيانات.
 - الصور الثلاث الأصلية المرفقة في ملفات المشروع محفوظة داخل `assets`، ولا تعتمد الصفحة على روابط صور خارجية.
+- تستخدم الصفحة نسخ JPEG محسّنة من الصور من `assets/optimized/` لتقليل حجم التحميل، مع الاحتفاظ بملفات PNG الأصلية.
 - خط Cairo يتم تحميله من Google Fonts، مع وجود خطوط بديلة إذا لم يتوفر اتصال بالإنترنت.
 
 
