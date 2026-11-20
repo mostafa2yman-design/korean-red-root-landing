@@ -7,6 +7,18 @@ const SITE_CONFIG = {
   currency: "جنيه"
 };
 
+// التقاط مصدر الإعلان من رابط الصفحة وحفظه خلال الجلسة
+const urlParams = new URLSearchParams(window.location.search);
+["utm_source", "utm_medium", "utm_campaign"].forEach((key) => {
+  const value = urlParams.get(key);
+  if (value) sessionStorage.setItem(key, value);
+});
+const utmParams = {
+  utm_source: sessionStorage.getItem("utm_source") || "",
+  utm_medium: sessionStorage.getItem("utm_medium") || "",
+  utm_campaign: sessionStorage.getItem("utm_campaign") || ""
+};
+
 const formatPrice = (amount) => `${new Intl.NumberFormat("en-EG").format(amount)} ${SITE_CONFIG.currency}`;
 const form = document.getElementById("orderForm");
 const total = document.getElementById("selectedTotal");
@@ -94,24 +106,34 @@ form.addEventListener("submit", (event) => {
 
   const payment = data.get("payment");
   const finalPrice = selectedPaymentPrice(payment);
-  const message = [
-    "طلب جديد — Korean Red Root",
+  const isPrepaid = payment === "إنستا باي" || payment === "محفظة إلكترونية";
+  const messageLines = [
+    isPrepaid
+      ? "طلب جديد — دفع مسبق 💳 Korean Red Root"
+      : "طلب جديد — دفع عند الاستلام 📦 Korean Red Root",
     "",
     `الاسم: ${data.get("name")}`,
     `رقم التليفون: ${data.get("phone")}`,
     `المحافظة: ${data.get("governorate")}`,
     `العنوان: ${data.get("address")}`,
     `طريقة الدفع: ${payment}`,
-    `السعر قبل الخصم: ${formatPrice(SITE_CONFIG.originalPrice)}`,
-    `السعر الأساسي بعد الخصم: ${formatPrice(SITE_CONFIG.salePrice)}`,
     `الإجمالي المستحق: ${formatPrice(finalPrice)}`,
     "الشحن: مجانًا"
-  ].join("\n");
+  ];
+  if (utmParams.utm_source || utmParams.utm_medium || utmParams.utm_campaign) {
+    messageLines.push("", `مصدر الإعلان: ${utmParams.utm_source || "-"} / ${utmParams.utm_medium || "-"} / ${utmParams.utm_campaign || "-"}`);
+  }
+  messageLines.push("", isPrepaid ? "هبعت صورة التحويل هنا بعد الدفع ✅" : "مستني تأكيد الطلب معاكم ✅");
+  const message = messageLines.join("\n");
 
-  trackPixelEvent("Lead", {
+  const leadParams = {
     content_name: "Korean Red Root Kwangdong 6 Years",
     payment_method: payment
-  });
+  };
+  if (utmParams.utm_source) leadParams.utm_source = utmParams.utm_source;
+  if (utmParams.utm_medium) leadParams.utm_medium = utmParams.utm_medium;
+  if (utmParams.utm_campaign) leadParams.utm_campaign = utmParams.utm_campaign;
+  trackPixelEvent("Lead", leadParams);
   trackOpenAIPixelEvent("lead_created", { type: "customer_action" });
 
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
