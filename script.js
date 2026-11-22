@@ -109,8 +109,8 @@ form.addEventListener("submit", (event) => {
   const isPrepaid = payment === "إنستا باي" || payment === "محفظة إلكترونية";
   const messageLines = [
     isPrepaid
-      ? "طلب جديد — دفع مسبق 💳 Korean Red Root"
-      : "طلب جديد — دفع عند الاستلام 📦 Korean Red Root",
+      ? "طلب جديد — دفع مسبق \u{1F4B3} Korean Red Root"
+      : "طلب جديد — دفع عند الاستلام \u{1F4E6} Korean Red Root",
     "",
     `الاسم: ${data.get("name")}`,
     `رقم التليفون: ${data.get("phone")}`,
@@ -123,7 +123,7 @@ form.addEventListener("submit", (event) => {
   if (utmParams.utm_source || utmParams.utm_medium || utmParams.utm_campaign) {
     messageLines.push("", `مصدر الإعلان: ${utmParams.utm_source || "-"} / ${utmParams.utm_medium || "-"} / ${utmParams.utm_campaign || "-"}`);
   }
-  messageLines.push("", isPrepaid ? "هبعت صورة التحويل هنا بعد الدفع ✅" : "مستني تأكيد الطلب معاكم ✅");
+  messageLines.push("", isPrepaid ? "هبعت صورة التحويل هنا بعد الدفع \u2705" : "مستني تأكيد الطلب معاكم \u2705");
   const message = messageLines.join("\n");
 
   const leadParams = {
