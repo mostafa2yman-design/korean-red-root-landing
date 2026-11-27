@@ -114,6 +114,7 @@ form.addEventListener("submit", (event) => {
     "",
     `الاسم: ${data.get("name")}`,
     `رقم التليفون: ${data.get("phone")}`,
+    ...(String(data.get("email") || "").trim() ? [`البريد الإلكتروني: ${String(data.get("email")).trim()}`] : []),
     `المحافظة: ${data.get("governorate")}`,
     `العنوان: ${data.get("address")}`,
     `طريقة الدفع: ${payment}`,
