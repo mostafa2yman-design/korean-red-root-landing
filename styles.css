@@ -31,3 +31,21 @@ h1 em,h2 em{color:#b4781f}.eyebrow,.text-link{color:#a8742a}.eyebrow i{backgroun
 footer{background:#f3e3c6;border-top-color:#e0c9a0}
 
 .mail-float{position:fixed;bottom:70px;left:18px;z-index:999;background:#a51d1b;color:#fff;padding:12px 20px;border-radius:50px;font-weight:800;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.25)}.mail-float:hover{filter:brightness(1.1)}.footer-inner>a[href^="mailto"]{font-size:11px;color:#7a6455;direction:ltr}@media(max-width:600px){.mail-float{bottom:62px;left:14px;padding:10px 16px;font-size:13px}}
+
+/* energy + vitality layer (v3): golden rays, red-gold ribbons, living roots on moss */
+.hero{background:repeating-conic-gradient(from 235deg at 82% 112%,#f2c66a3d 0 5deg,#f2c66a00 5deg 14deg),radial-gradient(ellipse at 72% 40%,#f7d9a455,transparent 50%),linear-gradient(130deg,#fffaf1,#fdeed6 60%,#f9e3c9)}
+.hero .hero-grid{position:relative}
+.hero-bottom-line{height:2px;background:linear-gradient(90deg,transparent,#e8b84e,#c9382f,#e8b84e,transparent)}
+.trust-strip{position:relative;overflow:hidden}
+.trust-strip:before{content:"";position:absolute;inset:0;background:url(assets/ribbons.svg) center/100% 100% no-repeat;opacity:.16;pointer-events:none}
+.trust-grid{position:relative}
+.section-dark:after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:url(assets/ribbons.svg) center/100% 100% no-repeat;opacity:.22;pointer-events:none}
+.order-section:after{content:"";position:absolute;left:0;right:0;top:0;height:110px;background:url(assets/ribbons.svg) center/100% 100% no-repeat;opacity:.2;pointer-events:none;transform:scaleY(-1)}
+.order-section{background:radial-gradient(ellipse at 18% 108%,#86b05f66,transparent 38%),radial-gradient(ellipse at 62% 112%,#7aa95a55,transparent 40%),radial-gradient(ellipse at 15% 30%,#f3b79a55,transparent 45%),linear-gradient(#fff6e6,#fbeacf)}
+footer{position:relative;overflow:hidden;background:radial-gradient(ellipse at 25% 130%,#8fb56a88,transparent 45%),radial-gradient(ellipse at 75% 130%,#7aa95a77,transparent 45%),#f3e3c6}
+footer:before{content:"";position:absolute;left:4%;top:-10px;width:70px;height:116px;background:url(assets/ginseng-root.svg) center/contain no-repeat;opacity:.5;pointer-events:none}
+footer:after{content:"";position:absolute;right:6%;top:-8px;width:60px;height:100px;background:url(assets/ginseng-root.svg) center/contain no-repeat;opacity:.4;pointer-events:none;transform:scaleX(-1)}
+.footer-inner{position:relative;z-index:1}
+@keyframes raysway{0%,100%{opacity:1}50%{opacity:.78}}
+.hero{animation:raysway 7s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.hero{animation:none}}
