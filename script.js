@@ -1,9 +1,9 @@
 /* إعدادات قابلة للتعديل — عدّل رقم واتساب والأسعار من هنا. */
 const SITE_CONFIG = {
   whatsappNumber: "201064312414", // رقم واتساب بصيغة دولية بدون + أو مسافات
-  originalPrice: 8190,
-  salePrice: 7290,
-  digitalPaymentPrice: 6561,
+  originalPrice: 12490,
+  salePrice: 9990,
+  digitalPaymentPrice: 9490,
   currency: "جنيه"
 };
 
